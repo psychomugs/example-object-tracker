@@ -40,13 +40,13 @@ class Motor(object):
         #breakpoint()
         self.motor = self.robot.motors[0]
         self.motor.compliant = False
-        self.motor.goal_speed = 1000.
-        self.motor.goto_behavior = 'linear'
+        #self.motor.goal_speed = 1000.
+        self.motor.goto_behavior = 'dummy'
         breakpoint()
         self.error = [0,0]
         self.position = self.motor.present_position
         self.position_goal = 0
-        self.gain = [0.1, 1.]
+        self.gain = [4., 1.]
         self.move(0)
         self.mirror = mirror
 
@@ -69,9 +69,10 @@ class Motor(object):
         #},duration=0.001,wait=False)
         self.motor.compliant = False
         dp = self.motor.goal_position - self.motor.present_position
-        print(position, self.motor.present_position, dp)
+        #print(position, self.motor.present_position)
+        print(self.motor.goal_speed)
         self.motor.goto_position(
-            position, duration=0.001, control='dummy', wait=True)
+            position, duration=0.01)
         self.position = self.motor.present_position
 
     def actuate(self):
@@ -80,4 +81,4 @@ class Motor(object):
         position_goal = min(max(position_goal,-150),150)
         #print(position_goal)
         self.position_goal = (self.position_goal + 0.1)%6
-        self.move(self.position_goal)
+        self.move(position_goal)
