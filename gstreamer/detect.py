@@ -42,10 +42,10 @@ import re
 import svgwrite
 import time
 from tracker import ObjectTracker
-
+from motor import Motor
 
 Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
-
+motor = Motor(mirror=True)
 
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')
@@ -98,7 +98,11 @@ def generate_svg(src_size, inference_size, inference_box, objs, labels, text_lin
                              fill='none', stroke='red', stroke_width='2'))
     else:
         for obj in objs:
+            if not labels.get(obj.id,obj.id) == 'bottle': continue
             x0, y0, x1, y1 = list(obj.bbox)
+            error = (x0+x1)/2 - 0.5
+            motor.update_error(error)
+            motor.actuate()
             # Relative coordinates.
             x, y, w, h = x0, y0, x1 - x0, y1 - y0
             # Absolute coordinates, input tensor space.
@@ -113,6 +117,7 @@ def generate_svg(src_size, inference_size, inference_box, objs, labels, text_lin
             shadow_text(dwg, x, y - 5, label)
             dwg.add(dwg.rect(insert=(x, y), size=(w, h),
                              fill='none', stroke='red', stroke_width='2'))
+            break
     return dwg.tostring()
 
 

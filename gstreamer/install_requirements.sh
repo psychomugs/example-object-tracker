@@ -50,13 +50,10 @@ echo "Note that the trackers have their own licensing, many of which
 are not Apache. Care should be taken if using a tracker with restrictive
 licenses for end applications."
 
-read -p "Install SORT (GPLv3)? " -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    wget https://github.com/abewley/sort/archive/master.zip -O sort.zip
-    unzip sort.zip -d ../third_party
-    rm sort.zip
-    sudo apt install python3-skimage
-    python3 -m pip install -r requirements_for_sort_tracker.txt
-fi
+wget https://github.com/abewley/sort/archive/master.zip -O sort.zip
+unzip sort.zip -d ../third_party
+rm sort.zip
+sudo apt install python3-skimage
+python3 -m pip install -r requirements_for_sort_tracker.txt
+
 echo
