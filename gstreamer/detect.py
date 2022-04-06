@@ -45,7 +45,9 @@ from tracker import ObjectTracker
 from motor import Motor
 
 Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
-motor = Motor(mirror=True)
+motor = Motor(
+  mirror=False
+  )
 
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')

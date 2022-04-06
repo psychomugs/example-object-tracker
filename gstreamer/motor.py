@@ -19,7 +19,7 @@ config = {
             'cap_motor': {
                 'orientation': 'direct',
                 'type': 'XL-320',
-                'id': 4,
+                'id': 1,
                 'angle_limit': [-150., 150.],
                 'offset': 0.
             }
@@ -34,7 +34,7 @@ class Motor(object):
             1000000,
         )
         self.motor_id = self.motors.scan(range(20))[0]
-        self.motor_id = 4
+        self.motor_id = 1
         self.robot = pypot.robot.from_config(config['gradcap'])
         self.robot.power_up()
         #breakpoint()
@@ -42,15 +42,15 @@ class Motor(object):
         self.motor.compliant = False
         #self.motor.goal_speed = 1000.
         self.motor.goto_behavior = 'dummy'
-        breakpoint()
+        #breakpoint()
         self.error = [0,0]
         self.position = self.motor.present_position
         self.position_goal = 0
-        self.gain = [4., 1.]
+        self.gain = [10., 1.]
         self.move(0)
         self.mirror = mirror
 
-    def update_error(self, error, scale=10.):
+    def update_error(self, error, scale=5.):
         scale *= -1 if self.mirror else 1
         self.error = [self.error[-1], error*scale]
 
@@ -70,7 +70,7 @@ class Motor(object):
         self.motor.compliant = False
         dp = self.motor.goal_position - self.motor.present_position
         #print(position, self.motor.present_position)
-        print(self.motor.goal_speed)
+        print(self.motor.present_position, self.motor.present_speed)
         self.motor.goto_position(
             position, duration=0.01)
         self.position = self.motor.present_position
