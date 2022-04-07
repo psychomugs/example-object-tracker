@@ -46,12 +46,12 @@ from motor import Motor
 import socketio
 sio = socketio.Client()
 # sio.connect('https://localhost:4000')
-sio.connect('https://192.168.68.101:4000')
+sio.connect('http://192.168.68.101:4000')
 
 Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
-motor = Motor(
-  mirror=False
-  )
+#motor = Motor(
+#  mirror=False
+#  )
 
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')
@@ -142,10 +142,7 @@ def get_output(interpreter, score_threshold, top_k, image_scale=1.0):
     category_ids = common.output_tensor(interpreter, 1)
     scores = common.output_tensor(interpreter, 2)
 
-import socketio
-    sio = socketio.Client()
-    sio.connect('https://localhost:4000')def make(i)
-    :
+    def make(i):
         ymin, xmin, ymax, xmax = boxes[i]
         return Object(
             id=int(category_ids[i]),
