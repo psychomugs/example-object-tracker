@@ -43,6 +43,10 @@ import svgwrite
 import time
 from tracker import ObjectTracker
 from motor import Motor
+import socketio
+sio = socketio.Client()
+# sio.connect('https://localhost:4000')
+sio.connect('https://192.168.68.101:4000')
 
 Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
 motor = Motor(
@@ -103,8 +107,9 @@ def generate_svg(src_size, inference_size, inference_box, objs, labels, text_lin
             if not labels.get(obj.id,obj.id) == 'bottle': continue
             x0, y0, x1, y1 = list(obj.bbox)
             error = (x0+x1)/2 - 0.5
-            motor.update_error(error)
-            motor.actuate()
+            # motor.update_error(error)
+            # motor.actuate()
+            sio.emit('track',error)
             # Relative coordinates.
             x, y, w, h = x0, y0, x1 - x0, y1 - y0
             # Absolute coordinates, input tensor space.
@@ -137,7 +142,10 @@ def get_output(interpreter, score_threshold, top_k, image_scale=1.0):
     category_ids = common.output_tensor(interpreter, 1)
     scores = common.output_tensor(interpreter, 2)
 
-    def make(i):
+import socketio
+    sio = socketio.Client()
+    sio.connect('https://localhost:4000')def make(i)
+    :
         ymin, xmin, ymax, xmax = boxes[i]
         return Object(
             id=int(category_ids[i]),
