@@ -42,7 +42,7 @@ import re
 import svgwrite
 import time
 from tracker import ObjectTracker
-from motor import Motor
+#from motor import Motor
 import socketio
 sio = socketio.Client()
 # sio.connect('https://localhost:4000')
