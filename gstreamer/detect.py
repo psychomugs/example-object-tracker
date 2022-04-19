@@ -41,13 +41,15 @@ import os
 import re
 import svgwrite
 import time
+import sys
+sys.path.append('../../blossom-app')
 from tracker import ObjectTracker
 #from motor import Motor
 import socketio
-sio = socketio.Client()
-# sio.connect('https://localhost:4000')
-sio.connect('http://192.168.68.101:4000')
-
+from flask_socketio import SocketIOTestClient
+sio = socketio.Client(ssl_verify=False, logger=True, engineio_logger=True)
+sio.connect('https://192.168.68.124:4000')
+#sio.connect('https://localhost:4000')
 Object = collections.namedtuple('Object', ['id', 'score', 'bbox'])
 #motor = Motor(
 #  mirror=False
